@@ -35,6 +35,7 @@ BuildRequires:  pkgconfig(libupnp) >= 1.14.6
 BuildRequires:  pkgconfig(pugixml)
 BuildRequires:  pkgconfig(sqlite3) >= 3.7.11
 BuildRequires:  pkgconfig(spdlog) >= 1.8.1
+BuildRequires:  pkgconfig(systemd)
 BuildRequires:  pkgconfig(taglib) >= 1.12
 BuildRequires:  pkgconfig(uuid)
 BuildRequires:  pkgconfig(zlib)
