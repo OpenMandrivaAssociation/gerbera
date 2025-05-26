@@ -2,29 +2,19 @@
 # or the long commit tag for the specific git branch
 %global commit_tag %{nil}
 
-# set with the commit date only if commit_tag not nil 
-# git version (i.e. master) in format date +Ymd
-%if "%{commit_tag}" != "%{nil}"
-%global commit_date %(git show -s --date=format:'%Y%m%d' %{commit_tag})
-%endif
-
-# repack non-release git branches as .7z with the commit date
-# in the following format <name>-<version>-<commit_date>.7z
-# the short commit tag should be 7 characters long
-
 Name:		   gerbera
-Version:        2.3.0%{?commit_date:~%{commit_date}}
+Version:        2.5.0
 Release:        1
-Summary:	    UPnP Media Server
-Group:		  Multimedia
+Summary:        UPnP Media Server
+Group:	      Multimedia
 License:	    GPLv2
 URL:		    https://github.com/gerbera/gerbera
 
 # change the source URL depending on if the package is a release version or a git version
 %if "%{commit_tag}" != "%{nil}"
-Source0:        %{url}/archive/%{commit_tag}.tar.gz#/%{name}-%{version}.7z
+Source0:        %{url}/archive/v%{commit_tag}.tar.gz#/%{name}-%{version}.xz
 %else
-Source0:        %{url}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 %endif
 
 Source1:        config.xml
@@ -49,40 +39,21 @@ BuildRequires:  pkgconfig(taglib) >= 1.12
 BuildRequires:  pkgconfig(uuid)
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  inotify-tools-devel
-BuildRequires:  cmake
-BuildRequires:  ninja
-
+BuildSystem:    cmake
+BuildOption:    -DWITH_JS=ON -DWITH_TAGLIB=ON -DWITH_MAGIC=ON
+BuildOption:    -DWITH_AVCODEC=ON -DWITH_EXIF=OFF -DWITH_EXIV2=ON
+BuildOption:    -DWITH_FFMPEGTHUMBNAILER=ON -DWITH_INOTIFY=ON 
+BuildOption:    -DWITH_SYSTEMD=ON -DWITH_TESTS=OFF 
+                
 %description
 Gerbera is a UPnP media server which allows you to stream your digital media 
 through your home network and consume it on a variety of UPnP compatible 
 devices.
 
-%prep
-%autosetup -p1
-%cmake -G "Ninja" \
-    -DWITH_JS=ON \
-    -DWITH_TAGLIB=ON \
-    -DWITH_MAGIC=ON \
-    -DWITH_AVCODEC=ON \
-    -DWITH_EXIF=OFF \
-    -DWITH_EXIV2=ON \
-    -DWITH_FFMPEGTHUMBNAILER=ON \
-    -DWITH_INOTIFY=ON \
-    -DWITH_SYSTEMD=ON \
-    -DWITH_TESTS=OFF    
-
-%build
-%ninja_build -C ${CMAKE_BUILD_DIR:-build}
-
-
-%install
-%ninja_install -C ${CMAKE_BUILD_DIR:-build}
+%install -a
 install -p -D -m0644 %{S:1} %{buildroot}%{_sysconfdir}/%{name}/config.xml
 install -p -D -m0644 %{S:2} %{buildroot}%{_sysusersdir}/%{name}.conf
 mkdir -p %{buildroot}%{_localstatedir}/log/%{name}
-
-%check
-
 
 %files
 %license LICENSE.md
