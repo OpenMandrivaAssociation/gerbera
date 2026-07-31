@@ -3,8 +3,8 @@
 %global commit_tag %{nil}
 
 Name:		   gerbera
-Version:        2.5.0
-Release:        3
+Version:        3.2.1
+Release:        1
 Summary:        UPnP Media Server
 Group:	      Multimedia
 License:	    GPLv2
