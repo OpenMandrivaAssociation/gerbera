@@ -22,6 +22,7 @@ Source2:        gerbera.conf
 
 BuildRequires:  pkgconfig(duktape)
 BuildRequires:  pkgconfig(exiv2)
+BuildRequires:  pkgconfig(jsoncpp)
 BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavformat)
 BuildRequires:  pkgconfig(libavutil)
