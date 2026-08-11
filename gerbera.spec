@@ -4,7 +4,7 @@
 
 Name:		gerbera
 Version:	3.2.1
-Release:	2
+Release:	3
 Summary:	UPnP Media Server
 Group:		Multimedia
 License:	GPLv2
