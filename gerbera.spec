@@ -55,14 +55,17 @@ Gerbera is a UPnP media server which allows you to stream your digital media
 through your home network and consume it on a variety of UPnP compatible
 devices.
 
-%build -p
-# fmt 12 no longer provides fmt::format via fmt/core.h
+%conf -p
+# Must be set before cmake caches CMAKE_CXX_FLAGS
 export CXXFLAGS="${CXXFLAGS:-%{optflags}} -DFMT_DEPRECATED_HEAVY_CORE"
 
 %prep -a
 # clang 23 / libstdc++ no longer pull cstring in transitively
 sed -i '/#include <thread>/a #include <cstring>' src/util/thread_runner.h
 sed -i '/#include <pugixml.hpp>/a #include <cstring>' src/config/setup/config_setup_path.cc
+# fmt 12: format() is not in core.h
+grep -q 'fmt/format.h' src/database/search_handler.h || \
+	sed -i '1i#include <fmt/format.h>' src/database/search_handler.h
 
 %install -a
 install -p -D -m0644 %{S:1} %{buildroot}%{_sysconfdir}/%{name}/config.xml
