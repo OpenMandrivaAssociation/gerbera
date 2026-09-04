@@ -57,7 +57,7 @@ devices.
 
 %conf -p
 # Must be set before cmake caches CMAKE_CXX_FLAGS
-export CXXFLAGS="${CXXFLAGS:-%{optflags}} -DFMT_DEPRECATED_HEAVY_CORE"
+export CXXFLAGS="${CXXFLAGS:-%{optflags}} -DFMT_DEPRECATED_HEAVY_CORE -include cstring"
 
 %prep -a
 # clang 23 / libstdc++ no longer pull cstring in transitively
