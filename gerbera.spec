@@ -55,6 +55,11 @@ Gerbera is a UPnP media server which allows you to stream your digital media
 through your home network and consume it on a variety of UPnP compatible
 devices.
 
+%prep -a
+# clang 23 / libstdc++ no longer pull cstring in transitively
+sed -i '/#include <thread>/a #include <cstring>' src/util/thread_runner.h
+sed -i '/#include <pugixml.hpp>/a #include <cstring>' src/config/setup/config_setup_path.cc
+
 %install -a
 install -p -D -m0644 %{S:1} %{buildroot}%{_sysconfdir}/%{name}/config.xml
 install -p -D -m0644 %{S:2} %{buildroot}%{_sysusersdir}/%{name}.conf
