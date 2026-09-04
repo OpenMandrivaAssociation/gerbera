@@ -55,6 +55,10 @@ Gerbera is a UPnP media server which allows you to stream your digital media
 through your home network and consume it on a variety of UPnP compatible
 devices.
 
+%build -p
+# fmt 12 no longer provides fmt::format via fmt/core.h
+export CXXFLAGS="${CXXFLAGS:-%{optflags}} -DFMT_DEPRECATED_HEAVY_CORE"
+
 %prep -a
 # clang 23 / libstdc++ no longer pull cstring in transitively
 sed -i '/#include <thread>/a #include <cstring>' src/util/thread_runner.h
